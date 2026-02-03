@@ -48,12 +48,20 @@ void ScalarConverter::convert(const std::string &literal)
                 f_counter++;
             else if (literal[i] == '.')
                 dot_counter++;
+            else if (isascii(literal[i]))
+                is_char = true;
             else
                 good = false;
+        }
+        if (is_char == true && i > 0)
+        {
+            std::cerr << "I only do conversions between int float double char give a proper value";
+            break;
         }
         //handling char incoming
         i++;
     }
+    if (i == literal.length())
 }
 
 
