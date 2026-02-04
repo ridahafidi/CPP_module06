@@ -1,7 +1,7 @@
-#include <cstdlib>   // strtod
-#include <cerrno>    // errno
-#include <limits>    // numeric_limits
-#include <cctype>    // isprint
+#include <cstdlib>
+#include <cerrno>
+#include <limits>
+#include <cctype>
 #include <iostream>
 #include "ScalarConverter.hpp"
 #include <cmath>
