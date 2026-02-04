@@ -8,14 +8,11 @@
 
 void ScalarConverter::convert(const std::string &literal)
 {
-    // 1) Empty check
     if (literal.empty())
     {
         std::cerr << "Empty input\n";
         return;
     }
-
-    // 2) Handle special values explicitly (subject requirement)
     if (literal == "nan" || literal == "nanf")
     {
         std::cout << "char: impossible\n";
@@ -40,8 +37,6 @@ void ScalarConverter::convert(const std::string &literal)
         std::cout << "double: -inf\n";
         return;
     }
-
-    // 3) Single printable char case (e.g. 'a')
     if (literal.length() == 1 && !std::isdigit(literal[0]))
     {
         char c = literal[0];
@@ -53,13 +48,9 @@ void ScalarConverter::convert(const std::string &literal)
         return;
     }
 
-    // 4) Numeric parsing using strtod
     char* end;
     errno = 0;
-
     double d = std::strtod(literal.c_str(), &end);
-
-    // 5) Validate parsing
     bool isFloat = false;
 
     if (*end == 'f' && *(end + 1) == '\0')
@@ -69,14 +60,12 @@ void ScalarConverter::convert(const std::string &literal)
         std::cerr << "Invalid literal\n";
         return;
     }
-
     if (errno == ERANGE)
     {
         std::cerr << "Overflow or underflow\n";
         return;
     }
-
-    // 6) CHAR
+    //  CHAR
     std::cout << "char: ";
     if (d < 0 || d > 127 || std::isnan(d))
         std::cout << "impossible\n";
@@ -85,7 +74,7 @@ void ScalarConverter::convert(const std::string &literal)
     else
         std::cout << "'" << static_cast<char>(d) << "'\n";
 
-    // 7) INT
+    // INT
     std::cout << "int: ";
     if (d < std::numeric_limits<int>::min() ||
         d > std::numeric_limits<int>::max() ||
@@ -94,7 +83,7 @@ void ScalarConverter::convert(const std::string &literal)
     else
         std::cout << static_cast<int>(d) << "\n";
 
-    // 8) FLOAT
+    //FLOAT
     std::cout << "float: ";
     if (std::isnan(d))
         std::cout << "nanf\n";
@@ -102,16 +91,22 @@ void ScalarConverter::convert(const std::string &literal)
         std::cout << "inff\n";
     else if (d == -std::numeric_limits<double>::infinity())
         std::cout << "-inff\n";
-    else
+    else if (d <= std::numeric_limits<float>::max() 
+            && d >= std::numeric_limits<float>::min())
     {
+        std::cout << std::numeric_limits<float>::max() << "   " << std::numeric_limits<float>::min() <<  "   "  << d << '\n';
         float f = static_cast<float>(d);
         std::cout << f;
         if (f == static_cast<int>(f))
             std::cout << ".0";
         std::cout << "f\n";
     }
+    else
+    {
+        std::cerr << "The float value overflows\n";
+    }
 
-    // 9) DOUBLE
+    //DOUBLE
     std::cout << "double: ";
     if (std::isnan(d))
         std::cout << "nan\n";
