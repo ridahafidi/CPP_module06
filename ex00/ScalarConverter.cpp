@@ -94,7 +94,6 @@ void ScalarConverter::convert(const std::string &literal)
     else if (d <= std::numeric_limits<float>::max() 
             && d >= std::numeric_limits<float>::min())
     {
-        std::cout << std::numeric_limits<float>::max() << "   " << std::numeric_limits<float>::min() <<  "   "  << d << '\n';
         float f = static_cast<float>(d);
         std::cout << f;
         if (f == static_cast<int>(f))

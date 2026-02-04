@@ -2,9 +2,16 @@
 #include "cstdlib"
 
 
-int main()
+int main(int ac, char **av)
 {
-    
-    ScalarConverter::convert("34028234663852885234249811704183484516925443");
-   
+    if (ac == 2)
+    {
+        ScalarConverter::convert(av[1]);
+    }
+    else
+    {
+        std::cerr << "Give a single argument\n";
+        return(1);
+    }
+    return (0);
 }
