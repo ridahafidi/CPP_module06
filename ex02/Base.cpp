@@ -11,9 +11,8 @@ Base::~Base()
 
 Base *generate(void)
 {
-    std::srand(std::time(0));
     short trigger = std::rand() % 3;
-    Base *b = nullptr;
+    Base *b = 0;
     if (!trigger)
         b = new A;
     else if (1 == trigger)
@@ -45,7 +44,7 @@ void identify(Base& p)
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << " Couldn't Cast To A" << std::endl;
+        (void)e;
     }
     try
     {
@@ -55,7 +54,7 @@ void identify(Base& p)
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << " Couldn't Cast To B"  << std::endl;
+        (void)e;
     }
     try
     {
@@ -65,6 +64,6 @@ void identify(Base& p)
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what()  << " Couldn't Cast To C" << std::endl;
+        (void)e;
     }
 }

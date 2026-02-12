@@ -5,8 +5,8 @@ struct Data
 {
     char a;
     int b;
-    float c;
     double p;
+    float c;
     Data();
     Data(const char &a, const int &b, const float &c, const double &p);
 };

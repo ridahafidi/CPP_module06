@@ -14,8 +14,6 @@ class ScalarConverter
 public:
     static void convert(const std::string &literal);
 };
-// "42.0f" "42"  "42f" '*'
-
 
 
 #endif

@@ -3,8 +3,16 @@
 #include <limits>
 #include <cctype>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include "ScalarConverter.hpp"
 #include <cmath>
+#include <stdint.h>
+
+ScalarConverter::ScalarConverter() {}
+ScalarConverter::ScalarConverter(const ScalarConverter& other) { (void)other; }
+ScalarConverter& ScalarConverter::operator=(const ScalarConverter& other) { (void)other; return *this; }
+ScalarConverter::~ScalarConverter() {}
 
 void ScalarConverter::convert(const std::string &literal)
 {
@@ -51,6 +59,7 @@ void ScalarConverter::convert(const std::string &literal)
     char* end;
     errno = 0;
     double d = std::strtod(literal.c_str(), &end);
+
     bool isFloat = false;
 
     if (*end == 'f' && *(end + 1) == '\0')
@@ -60,12 +69,11 @@ void ScalarConverter::convert(const std::string &literal)
         std::cerr << "Invalid literal\n";
         return;
     }
-    if (errno == ERANGE)
+    if (errno == ERANGE && std::isinf(d))
     {
-        std::cerr << "Overflow or underflow\n";
+        std::cerr << "Overflow\n";
         return;
     }
-    //  CHAR
     std::cout << "char: ";
     if (d < 0 || d > 127 || std::isnan(d))
         std::cout << "impossible\n";
@@ -73,8 +81,6 @@ void ScalarConverter::convert(const std::string &literal)
         std::cout << "Non displayable\n";
     else
         std::cout << "'" << static_cast<char>(d) << "'\n";
-
-    // INT
     std::cout << "int: ";
     if (d < std::numeric_limits<int>::min() ||
         d > std::numeric_limits<int>::max() ||
@@ -82,8 +88,6 @@ void ScalarConverter::convert(const std::string &literal)
         std::cout << "impossible\n";
     else
         std::cout << static_cast<int>(d) << "\n";
-
-    //FLOAT
     std::cout << "float: ";
     if (std::isnan(d))
         std::cout << "nanf\n";
@@ -92,20 +96,21 @@ void ScalarConverter::convert(const std::string &literal)
     else if (d == -std::numeric_limits<double>::infinity())
         std::cout << "-inff\n";
     else if (d <= std::numeric_limits<float>::max() 
-            && d >= std::numeric_limits<float>::min())
+            && d >= -(std::numeric_limits<float>::max()))
     {
         float f = static_cast<float>(d);
-        std::cout << f;
-        if (f == static_cast<int>(f))
+        std::ostringstream oss;
+        oss << std::setprecision(7) << f;
+        std::string fs = oss.str();
+        std::cout << fs;
+        if (fs.find('.') == std::string::npos && fs.find('e') == std::string::npos)
             std::cout << ".0";
         std::cout << "f\n";
     }
     else
     {
-        std::cerr << "The float value overflows\n";
+        std::cout << "impossible\n";
     }
-
-    //DOUBLE
     std::cout << "double: ";
     if (std::isnan(d))
         std::cout << "nan\n";
@@ -115,8 +120,11 @@ void ScalarConverter::convert(const std::string &literal)
         std::cout << "-inf\n";
     else
     {
-        std::cout << d;
-        if (d == static_cast<int>(d))
+        std::ostringstream oss;
+        oss << std::setprecision(16) << d;
+        std::string ds = oss.str();
+        std::cout << ds;
+        if (ds.find('.') == std::string::npos && ds.find('e') == std::string::npos)
             std::cout << ".0";
         std::cout << "\n";
     }

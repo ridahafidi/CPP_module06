@@ -1,6 +1,4 @@
 #include "ScalarConverter.hpp"
-#include "cstdlib"
-
 
 int main(int ac, char **av)
 {

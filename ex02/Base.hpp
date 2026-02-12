@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <ctime>
-
+#include <stdlib.h>
 
 class Base
 {
